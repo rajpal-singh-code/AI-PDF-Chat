@@ -1,42 +1,46 @@
 const express = require("express");
 const router = express.Router();
-const fs = require("fs");
+const multer = require("multer");
 const pdfParse = require("pdf-parse");
-const upload = require("../config/multer");
 const groq = require("../utils/groq");
 
 
-let storedPdfText = "";
+const upload = multer({
+  storage: multer.memoryStorage(),
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === "application/pdf") cb(null, true);
+    else cb(new Error("Only PDF files allowed"), false);
+  },
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 
-// ✅ ROUTE 1: Upload & parse PDF
 router.post("/upload-pdf", upload.single("pdf"), async (req, res) => {
   try {
-    const dataBuffer = fs.readFileSync(req.file.path);
-    const pdfData = await pdfParse(dataBuffer);
+    
+    const pdfData = await pdfParse(req.file.buffer);
 
     const cleanedText = pdfData.text.replace(/\s+/g, " ").trim();
-    storedPdfText = cleanedText.substring(0, 12000);
+    const truncatedText = cleanedText.substring(0, 12000);
 
-    res.json({ success: true, message: "PDF uploaded and parsed successfully" });
+    res.json({ success: true, parsedText: truncatedText });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ✅ ROUTE 2: Ask question about stored PDF
 router.post("/ask", async (req, res) => {
   try {
-    const { question } = req.body;
+    const { question, pdfText } = req.body;
 
-    if (!storedPdfText) {
-      return res.status(400).json({ error: "No PDF uploaded yet. Please upload a PDF first." });
+    if (!pdfText) {
+      return res.status(400).json({ error: "No PDF uploaded yet. Please upload first." });
     }
 
     const completion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: `Answer ONLY from this PDF text: ${storedPdfText}`,
+          content: `Answer ONLY from this PDF text: ${pdfText}`,
         },
         {
           role: "user",
@@ -46,8 +50,7 @@ router.post("/ask", async (req, res) => {
       model: "llama-3.1-8b-instant",
     });
 
-    const answer = completion.choices[0].message.content;
-    res.json({ success: true, answer });
+    res.json({ success: true, answer: completion.choices[0].message.content });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

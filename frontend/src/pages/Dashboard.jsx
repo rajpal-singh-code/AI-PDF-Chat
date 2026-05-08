@@ -12,6 +12,7 @@ function Dashboard() {
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [toastMsg, setToastMsg] = useState("");
   const [showToast, setShowToast] = useState(false);
+  const [pdfText, setPdfText] = useState(""); // ✅ store parsed text here
 
   const fireToast = (msg) => {
     setToastMsg(msg);
@@ -30,9 +31,11 @@ function Dashboard() {
     formData.append("pdf", file);
 
     try {
-      await API.post("/upload-pdf", formData, {
+      const res = await API.post("/upload-pdf", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      setPdfText(res.data.parsedText); // ✅ save parsed text in state
       fireToast("✅ PDF uploaded successfully!");
     } catch (err) {
       console.log(err);
@@ -44,7 +47,10 @@ function Dashboard() {
   const handleAskQuestion = async (question) => {
     if (!question) return;
     try {
-      const res = await API.post("/ask", { question });
+      const res = await API.post("/ask", {
+        question,
+        pdfText, // ✅ send stored text with every question
+      });
       setAnswer(res.data.answer);
     } catch (err) {
       console.log(err);
@@ -55,24 +61,16 @@ function Dashboard() {
   return (
     <div className="bg-[#020817] h-screen flex flex-col overflow-hidden">
       <Navbar />
-
       <div className="flex flex-1 overflow-hidden">
-
-        {/* SIDEBAR */}
         <Sidebar
           handleFileChange={handleFileChange}
           uploadedFileName={uploadedFileName}
         />
-
-        {/* PDF */}
         <div className="flex-1 bg-[#08152d] overflow-auto flex justify-center p-6">
           <PdfPreview pdfFile={pdfFile} />
         </div>
-
-        {/* CHAT */}
         <ChatBox answer={answer} handleAskQuestion={handleAskQuestion} />
       </div>
-
       <Toast message={toastMsg} show={showToast} />
     </div>
   );
