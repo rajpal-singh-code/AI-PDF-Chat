@@ -9,10 +9,11 @@ const app = express();
 const authRouter = require("./routes/authRoutes.js");
 const pdfRoutes = require("./routes/pdfRoutes.js");
 
-// ✅ CORS Configuration - Added your Vercel link directly
 app.use(cors({
     origin: ["http://localhost:5173", "https://ai-pdf-chat-bfis.vercel.app"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
