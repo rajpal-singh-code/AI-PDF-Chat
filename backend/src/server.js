@@ -9,8 +9,12 @@ const app = express();
 const authRouter = require("./routes/authRoutes.js");
 const pdfRoutes = require("./routes/pdfRoutes.js");
 
+// ✅ Cleaned CORS Configuration
 app.use(cors({
-    origin: ["http://localhost:5173", "https://ai-pdf-chat-bfis.vercel.app"],
+    origin: [
+        "http://localhost:5173", 
+        "https://ai-pdf-chat-zk38.vercel.app" 
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
@@ -29,7 +33,6 @@ app.use("/api", pdfRoutes);
 const startServer = async() => {
     try {
         await connectDB();
-        // Use a default port if process.env.PORT is not defined for local testing
         const port = process.env.PORT || 5000;
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
