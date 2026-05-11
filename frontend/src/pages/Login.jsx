@@ -31,11 +31,9 @@ function Login() {
         localStorage.setItem("token", res.data.token);
       }
 
-      alert("Login Success");
-
       navigate("/dashboard");
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
 
       alert(err.response?.data?.error || "Login Failed");
     }
