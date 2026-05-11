@@ -14,7 +14,7 @@ function ChatBox({ answer, handleAskQuestion }) {
 
   return (
 
-    <div className="w-full md:w-96 bg-[#071127] border-l border-[#1b2942] flex flex-col justify-between">
+    <div className="w-full md:w-96 bg-[#071127] border-l border-[#1b2942] flex flex-col h-[65vh] md:h-full">
 
       <div className="p-4 border-b border-[#1b2942]">
 
@@ -24,7 +24,7 @@ function ChatBox({ answer, handleAskQuestion }) {
 
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 touch-pan-y min-h-0">
 
         {
 
