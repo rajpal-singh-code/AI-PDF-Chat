@@ -1,3 +1,5 @@
+// Dashboard.jsx
+
 import { useState } from "react";
 
 import Navbar from "../components/Navbar";
@@ -94,15 +96,13 @@ function Dashboard() {
 
   return (
 
-    <div className="bg-[#020817] h-screen md:h-screen flex flex-col overflow-x-hidden overflow-y-auto md:overflow-hidden">
+    <div className="bg-[#020817] h-screen flex flex-col overflow-hidden">
 
       {/* NAVBAR */}
 
       <Navbar />
 
-      {/* MAIN CONTENT */}
-
-      <div className="flex flex-col md:flex-row flex-1 md:overflow-hidden">
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
 
         {/* SIDEBAR */}
 
