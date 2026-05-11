@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 function ChatBox({ answer, handleAskQuestion }) {
@@ -14,7 +13,9 @@ function ChatBox({ answer, handleAskQuestion }) {
 
   return (
 
-    <div className="w-full md:w-96 bg-[#071127] border-l border-[#1b2942] flex flex-col justify-between">
+    <div className="w-full md:w-96 bg-[#071127] border-l border-[#1b2942] flex flex-col min-h-[65vh] md:h-full">
+
+      {/* HEADER */}
 
       <div className="p-4 border-b border-[#1b2942]">
 
@@ -24,7 +25,9 @@ function ChatBox({ answer, handleAskQuestion }) {
 
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      {/* ANSWER */}
+
+      <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 min-h-0">
 
         {
 
@@ -48,6 +51,8 @@ function ChatBox({ answer, handleAskQuestion }) {
 
       </div>
 
+      {/* INPUT */}
+
       <div className="p-3 border-t border-[#1b2942]">
 
         <div className="bg-[#16243f] rounded-2xl flex items-center px-3 py-2 gap-2">
@@ -62,7 +67,7 @@ function ChatBox({ answer, handleAskQuestion }) {
 
           <button
             onClick={handleSubmit}
-            className="bg-violet-600 hover:bg-violet-500 text-white min-w-10.5 h-10.5 rounded-xl flex items-center justify-center"
+            className="bg-violet-600 hover:bg-violet-500 text-white w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
           >
             ➤
           </button>

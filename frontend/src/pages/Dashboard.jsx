@@ -96,13 +96,15 @@ function Dashboard() {
 
   return (
 
-    <div className="bg-[#020817] h-screen flex flex-col overflow-hidden">
+    <div className="bg-[#020817] min-h-screen flex flex-col md:h-screen overflow-x-hidden md:overflow-hidden">
 
       {/* NAVBAR */}
 
       <Navbar />
 
-      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+      {/* MAIN CONTENT */}
+
+      <div className="flex flex-col md:flex-row flex-1 overflow-y-auto md:overflow-hidden">
 
         {/* SIDEBAR */}
 
