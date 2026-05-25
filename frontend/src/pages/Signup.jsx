@@ -31,7 +31,7 @@ function Signup() {
 
       await API.post("/signup", formData);
 
-      alert("Signup Success");
+      // alert("Signup Success");
 
       navigate("/");
 
